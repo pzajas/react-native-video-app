@@ -19,5 +19,7 @@ export default {
 
   primary: '#2B2D42',
   white: '#FFFFFF',
+  black: '#000000',
+  grey: '#A9A9A9',
   background: '#8D99AE',
 }
