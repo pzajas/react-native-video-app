@@ -19,4 +19,5 @@ export default {
 
   primary: '#2B2D42',
   white: '#FFFFFF',
+  background: '#8D99AE',
 }

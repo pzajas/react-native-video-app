@@ -1,52 +1,50 @@
-import React from 'react'
-import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { Link, Tabs } from 'expo-router'
-import { Pressable } from 'react-native'
-
-import { useColorScheme } from '@/components/useColorScheme'
+import { Tabs } from 'expo-router'
 import { useClientOnlyValue } from '@/components/useClientOnlyValue'
+import { HomeIcon } from '@/assets/icons/HomeIcon'
+import { SearchIcon } from '@/assets/icons/SearchIcon'
 import palette from '@/constants/palette'
 
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>['name']; color: string }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />
-}
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme()
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: palette[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: palette.primary,
+        tabBarInactiveTintColor: palette.white,
         headerShown: useClientOnlyValue(false, true),
+        tabBarStyle: {
+          backgroundColor: palette.background,
+          paddingBottom: 5,
+          height: 72,
+        },
+        tabBarItemStyle: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+        },
+        tabBarIconStyle: {
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginTop: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginBottom: 5,
+          fontFamily: 'PoppinsRegular',
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={palette[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          tabBarIcon: ({ color }) => <HomeIcon color={color} />,
         }}
       />
       <Tabs.Screen
         name="search"
         options={{
           title: 'Search',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <SearchIcon color={color} />,
         }}
       />
     </Tabs>

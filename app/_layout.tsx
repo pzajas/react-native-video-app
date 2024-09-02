@@ -4,10 +4,11 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import { ThemeProvider } from '@react-navigation/native'
 import { DarkTheme, DefaultTheme } from '@react-navigation/native'
-import { useColorScheme } from '@/components/useColorScheme' // Adjust import if necessary
+import { useColorScheme } from '@/components/useColorScheme'
 
 import { Stack } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
+import { PaperProvider } from 'react-native-paper'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -44,11 +45,12 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <PaperProvider>
+        <Stack>
+          <Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </PaperProvider>
     </ThemeProvider>
   )
 }
