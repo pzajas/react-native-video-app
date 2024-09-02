@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import palette from '@/constants/palette'
-
 interface IPrimaryButton {
   width: number | string
   text: string
