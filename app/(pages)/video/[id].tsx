@@ -1,23 +1,46 @@
 import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import TabSwitcher from '@/components/TabSwitcher'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import palette from '@/constants/palette'
 import ChannelIcon from '@/assets/icons/ChannelIcon'
+import VideoPlayer from '@/VideoPlayer'
+import getVideoDetails from '@/api/fetchVideo'
 
 export default function VideoPage() {
+  const [videoUrl, setVideoUrl] = useState('')
   const [selectedTab, setSelectedTab] = useState('Details')
   const params = useLocalSearchParams()
 
   const videoId = params.id as string
+  const videoTitle = params.title
 
-  const videoTitle = `Video Title for ID ${videoId}`
+  // useEffect(() => {
+  //   const fetchVideoUrl = async () => {
+  //     try {
+  //       const url = await getVideoDetails(videoId)
+  //       setVideoUrl(url)
+  //     } catch (error) {
+  //       console.error('Error fetching video URL:', error)
+  //     }
+  //   }
+
+  //   fetchVideoUrl()
+  // }, [videoId])
+
+  if (videoUrl === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading or no video URL available...</Text>
+      </View>
+    )
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScrollView style={styles.container}>
         <View style={{ width: '100%' }}>
-          <View style={{ width: '100%', height: 250, backgroundColor: 'red' }} />
+          <VideoPlayer />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {videoTitle}
           </Text>
@@ -32,7 +55,7 @@ export default function VideoPage() {
             }}
           >
             <ChannelIcon />
-            <Text style={{ fontFamily: 'PoppinsBold', fontSize: 14, marginLeft: 12 }}>Channel name</Text>
+            <Text style={{ fontFamily: 'PoppinsBold', fontSize: 14, marginLeft: 12 }}>{params.channelTitle}</Text>
           </View>
 
           <TabSwitcher videoId={videoId} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />

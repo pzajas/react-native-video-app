@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,7 +6,6 @@ import {
   TextInput,
   Button,
   Alert,
-  SafeAreaView,
   ScrollView,
   TouchableWithoutFeedback,
   Keyboard,
@@ -17,7 +15,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
 import { PrimaryButton } from './buttons/PrimaryButton'
-import { HomeIcon } from '@/assets/icons/HomeIcon'
+import LikesIcon from '@/assets/icons/LikesIcon'
+import ViewsIcon from '@/assets/icons/ViewsIcon'
 
 type Note = string
 interface FormData {
@@ -35,9 +34,9 @@ const TabSwitcher = ({
 }) => {
   const { control, handleSubmit, reset } = useForm<FormData>({ defaultValues: { note: '' } })
   const queryClient = useQueryClient()
-
   const params = useLocalSearchParams()
-  console.log(params, 'tab switch')
+
+  console.log(params, 'stats from tabswitcher')
 
   const NOTES_KEY = `video_notes_${videoId}`
 
@@ -72,7 +71,7 @@ const TabSwitcher = ({
 
   const onSubmit = (data: FormData) => {
     mutation.mutate(data.note)
-    reset() // Reset the form after submission
+    reset()
   }
 
   const renderContent = () => {
@@ -85,26 +84,23 @@ const TabSwitcher = ({
           <>
             <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginBottom: 8 })}>Destcription</Text>
             <Text style={(styles.contentText, { fontFamily: 'PoppinsMedium', fontSize: 12 })}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque venenatis semper purus a accumsan.
-              Donec accumsan pulvinar metus, euismod lacinia libero congue non. Vivamus ut massa finibus, consequat dui
-              commodo, semper magna. Donec nec justo consectetur lacus facilisis tristique eget quis nulla. Cras sodales
-              lacinia nisi, in dictum elit commodo in.
+              {params?.description.length > 0 ? params?.description : 'No description yet...'}
             </Text>
 
             <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginVertical: 16 })}>Statistics</Text>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <PrimaryButton
-                text="25268952 views"
-                icon={<HomeIcon color={'white'} />}
+                text={'234243 views'}
+                icon={<ViewsIcon color={'white'} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
                 onPress={() => console.log('ppp')}
                 width="45%"
               />
               <PrimaryButton
-                text="25268952 views"
-                icon={<HomeIcon color={'white'} />}
+                text="25268952 likes"
+                icon={<LikesIcon color={'white'} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
                 onPress={() => console.log('ppp')}
