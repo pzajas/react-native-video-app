@@ -5,10 +5,10 @@ import { useEffect } from 'react'
 import { ThemeProvider } from '@react-navigation/native'
 import { DarkTheme, DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
-
 import { Stack } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
 import { PaperProvider } from 'react-native-paper'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -39,18 +39,20 @@ export default function RootLayout() {
 
   return <RootLayoutNav />
 }
-
+const queryClient = new QueryClient()
 function RootLayoutNav() {
   const colorScheme = useColorScheme()
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <PaperProvider>
-        <Stack>
-          <Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </PaperProvider>
+      <QueryClientProvider client={queryClient}>
+        <PaperProvider>
+          <Stack>
+            <Stack.Screen name="(pages)/index" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </PaperProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }

@@ -3,8 +3,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { OptionsIcon } from '@/assets/icons/OptionsIcon'
 import Feather from 'react-native-vector-icons/Feather'
 import palette from '@/constants/palette'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'expo-router'
+import axios from 'axios'
 
 const { width: screenWidth } = Dimensions.get('window')
 const mockVideos = [
@@ -153,6 +154,64 @@ const mockVideos = [
 export default function HomeScreen() {
   const [query, setQuery] = useState('react native')
   const router = useRouter()
+
+  // const [reactVideos, setReactVideos] = useState([])
+  // const [reactNativeVideos, setReactNativeVideos] = useState([])
+  // const [javascriptVideos, setJavascriptVideos] = useState([])
+  // const [typescriptVideos, setTypescriptVideos] = useState([])
+
+  // useEffect(() => {
+  //   fetchVideos()
+  // }, [])
+  // const API_KEY = 'AIzaSyCWAMHzv5iEshbOSUGoDCfGMU_T6CkzqEY'
+  // const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search'
+  // const fetchVideos = async () => {
+  //   try {
+  //     const response = await axios.get(YOUTUBE_API_URL, {
+  //       params: {
+  //         part: 'snippet',
+  //         q: 'React, React Native, JavaScript, TypeScript',
+  //         type: 'video',
+  //         maxResults: 100,
+  //         key: API_KEY,
+  //       },
+  //     })
+
+  //     console.log(response.data)
+
+  //     const reactVideos = []
+  //     const reactNativeVideos = []
+  //     const javascriptVideos = []
+  //     const typescriptVideos = []
+
+  //     response.data.items.forEach((item) => {
+  //       const title = item.snippet.title.toLowerCase()
+  //       const description = item.snippet.description.toLowerCase()
+
+  //       console.log(item.snippet.publishedAt)
+
+  //       if (title.includes('react') && !title.includes('react native')) {
+  //         reactVideos.push(item)
+  //       }
+  //       if (title.includes('react native')) {
+  //         reactNativeVideos.push(item)
+  //       }
+  //       if (title.includes('javascript')) {
+  //         javascriptVideos.push(item)
+  //       }
+  //       if (title.includes('typescript')) {
+  //         typescriptVideos.push(item)
+  //       }
+  //     })
+
+  //     setReactVideos(reactVideos)
+  //     setReactNativeVideos(reactNativeVideos)
+  //     setJavascriptVideos(javascriptVideos)
+  //     setTypescriptVideos(typescriptVideos)
+  //   } catch (error) {
+  //     console.error('Error fetching videos:', error)
+  //   }
+  // }
 
   const handleNavigate = (videoId: string) => {
     router.push(`/video/${videoId}`)
