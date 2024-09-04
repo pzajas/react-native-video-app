@@ -55,7 +55,7 @@ export default function Search() {
   const handleSearchChange = (text: string) => {
     setQuery(text)
     if (text === '') {
-      setDebouncedQuery('') // Ensure debouncedQuery is cleared if text is empty
+      setDebouncedQuery('')
     }
   }
 
