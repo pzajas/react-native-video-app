@@ -1,27 +1,39 @@
-import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Dimensions, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useState, useEffect } from 'react'
 import { queryClient } from '@/api/queryClient'
 import { useQuery } from '@tanstack/react-query'
-import palette from '@/constants/palette'
-import { Feather } from '@expo/vector-icons'
 import { getFormattedDate } from '@/utils/dates/getFormattedDate'
-import { useRouter } from 'expo-router'
+import { useRouter, useLocalSearchParams } from 'expo-router'
+import palette from '@/constants/palette'
+import { SearchInput } from '@/components/search/searchInput'
 
 const { width: screenWidth } = Dimensions.get('window')
+
 export default function Search() {
-  const [query, setQuery] = useState('')
+  const { title } = useLocalSearchParams()
+  const [query, setQuery] = useState(title || '')
   const [debouncedQuery, setDebouncedQuery] = useState('')
+  const [loading, setLoading] = useState(false)
+
   const router = useRouter()
-  const { data: videos } = useQuery({
+
+  const { data: videos, isLoading } = useQuery({
     queryKey: ['videos'],
     queryFn: () => queryClient.getQueryData<any[]>(['videos']) || [],
     staleTime: Infinity,
   })
 
   useEffect(() => {
+    if (query !== debouncedQuery) {
+      setLoading(true)
+    }
+  }, [query])
+
+  useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedQuery(query)
+      setLoading(false)
     }, 500)
 
     return () => {
@@ -29,9 +41,23 @@ export default function Search() {
     }
   }, [query])
 
+  useEffect(() => {
+    if (title) {
+      setQuery(title)
+      setLoading(true)
+    }
+  }, [title])
+
   const filteredVideos = debouncedQuery
     ? videos?.filter((video) => video.snippet.title.toLowerCase().includes(debouncedQuery.toLowerCase()))
     : []
+
+  const handleSearchChange = (text: string) => {
+    setQuery(text)
+    if (text === '') {
+      setDebouncedQuery('') // Ensure debouncedQuery is cleared if text is empty
+    }
+  }
 
   const renderItem = ({ item }: any) => {
     return (
@@ -62,70 +88,53 @@ export default function Search() {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1, paddingHorizontal: 16 }}>
       <View style={styles.searchContainer}>
-        <View style={styles.inputContainer}>
-          <Feather name="search" size={20} color={palette.primary} />
-          <TextInput
-            placeholder="Search videos"
-            placeholderTextColor={'gray'}
-            style={styles.searchInput}
-            onChangeText={setQuery}
-            value={query}
-            inputMode="text"
-          />
-        </View>
+        <SearchInput query={query} onChange={handleSearchChange} />
       </View>
-      <Text>
-        {debouncedQuery && (
-          <Text
-            style={{
-              fontSize: 10,
-              color: palette.primary,
-              fontFamily: 'PoppinsRegular',
-            }}
-          >
-            {filteredVideos?.length} results found for: "
-            <Text style={{ fontFamily: 'PoppinsSemiBold', fontSize: 10, color: palette.primary }}>{query}</Text>"
-          </Text>
-        )}
-      </Text>
-      {debouncedQuery ? (
-        <FlatList
-          data={filteredVideos}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id.videoId}
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View style={styles.emptyState}>
-          <Text>Type something to search...</Text>
+      {isLoading || loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={palette.primary} />
+          <Text style={styles.loadingText}>Filtering results...</Text>
         </View>
+      ) : (
+        <>
+          <Text>
+            {debouncedQuery && (
+              <Text
+                style={{
+                  fontSize: 10,
+                  color: palette.primary,
+                  fontFamily: 'PoppinsRegular',
+                }}
+              >
+                {filteredVideos?.length} results found for: "
+                <Text style={{ fontFamily: 'PoppinsSemiBold', fontSize: 10, color: palette.primary }}>{query}</Text>"
+              </Text>
+            )}
+          </Text>
+          {debouncedQuery ? (
+            <FlatList
+              data={filteredVideos}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id.videoId}
+              showsVerticalScrollIndicator={false}
+            />
+          ) : (
+            <View style={styles.emptyState}>
+              <Text>Type something to search...</Text>
+            </View>
+          )}
+        </>
       )}
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: palette.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 10,
     marginBottom: 5,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: palette.white,
-    borderWidth: 2,
-    borderColor: palette.primary,
-    borderRadius: 16,
-    paddingHorizontal: 10,
-    flex: 1,
   },
   channelTitle: {
     fontSize: 12,
@@ -138,10 +147,6 @@ const styles = StyleSheet.create({
     color: palette.black,
     fontFamily: 'PoppinsRegular',
     textAlignVertical: 'center',
-    backgroundColor: palette.white,
-    marginLeft: 14,
-    fontSize: 16,
-    marginTop: 2,
   },
   flatList: {
     paddingLeft: 15,
@@ -153,11 +158,6 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginBottom: 24,
-  },
-  textRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
   },
   textColumn: {
     flex: 1,
@@ -179,5 +179,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: screenWidth * 0.5,
     borderRadius: 10,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: palette.primary,
+    marginTop: 10,
+    fontFamily: 'PoppinsRegular',
   },
 })

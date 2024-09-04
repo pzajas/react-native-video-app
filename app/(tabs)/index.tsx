@@ -9,6 +9,7 @@ import { VideosSlider } from '@/components/sliders/videoSlider'
 import { fetchVideosData } from '@/api/fetchVideos'
 import Feather from 'react-native-vector-icons/Feather'
 import palette from '@/constants/palette'
+import { SearchInput } from '@/components/search/searchInput'
 
 const { width: screenWidth } = Dimensions.get('window')
 
@@ -58,17 +59,7 @@ export default function VideoListScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.searchContainer}>
-          <View style={styles.inputContainer}>
-            <Feather name="search" size={25} color={'gray'} style={styles.icon} />
-            <TextInput
-              placeholder="Search videos"
-              placeholderTextColor={'gray'}
-              style={styles.searchInput}
-              onChangeText={(text) => setQuery(text)}
-              value={query}
-              inputMode="text"
-            />
-          </View>
+          <SearchInput />
           <TouchableOpacity onPress={() => router.push('/options')}>
             <OptionsIcon />
           </TouchableOpacity>
@@ -113,22 +104,6 @@ const styles = StyleSheet.create({
     color: palette.black,
     fontFamily: 'PoppinsRegular',
     textAlignVertical: 'center',
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    marginTop: 15,
-  },
-  titleText: {
-    fontSize: 18,
-    fontFamily: 'PoppinsSemiBold',
-    color: palette.primary,
-  },
-  flatList: {
-    paddingLeft: 15,
-    marginTop: 10,
   },
   videoContainer: {
     width: screenWidth * 0.45,
