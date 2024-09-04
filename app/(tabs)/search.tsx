@@ -1,17 +1,18 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
+import { Dimensions, FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useState, useEffect } from 'react'
 import { queryClient } from '@/api/queryClient'
 import { useQuery } from '@tanstack/react-query'
-import { TextInput } from 'react-native-paper'
 import palette from '@/constants/palette'
 import { Feather } from '@expo/vector-icons'
+import { getFormattedDate } from '@/utils/dates/getFormattedDate'
+import { useRouter } from 'expo-router'
 
+const { width: screenWidth } = Dimensions.get('window')
 export default function Search() {
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
-  const insets = useSafeAreaInsets()
-
+  const router = useRouter()
   const { data: videos } = useQuery({
     queryKey: ['videos'],
     queryFn: () => queryClient.getQueryData<any[]>(['videos']) || [],
@@ -28,14 +29,6 @@ export default function Search() {
     }
   }, [query])
 
-  // if (!videos || videos.length === 0) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>No videos available</Text>
-  //     </View>
-  //   )
-  // }
-
   const filteredVideos = debouncedQuery
     ? videos?.filter((video) => video.snippet.title.toLowerCase().includes(debouncedQuery.toLowerCase()))
     : []
@@ -43,16 +36,34 @@ export default function Search() {
   const renderItem = ({ item }: any) => {
     return (
       <View style={styles.textContainer}>
-        <Text numberOfLines={1}>{item.snippet.title}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            router.push({
+              pathname: `/video/${item.id.videoId}`,
+              params: item.snippet,
+            })
+          }}
+        >
+          <Image source={{ uri: item.snippet.thumbnails.high.url }} style={styles.thumbnail} />
+        </TouchableOpacity>
+        <View style={styles.textColumn}>
+          <Text numberOfLines={1} style={styles.channelTitle}>
+            {item.snippet.channelTitle}
+          </Text>
+          <Text numberOfLines={2} style={styles.videoTitle}>
+            {item.snippet.title}
+          </Text>
+          <Text style={styles.publishTime}>{getFormattedDate(item.snippet.publishedAt)}</Text>
+        </View>
       </View>
     )
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: 'white', flex: 1, paddingHorizontal: 16 }}>
       <View style={styles.searchContainer}>
         <View style={styles.inputContainer}>
-          <Feather name="search" size={25} color={'gray'} style={styles.icon} />
+          <Feather name="search" size={20} color={palette.primary} />
           <TextInput
             placeholder="Search videos"
             placeholderTextColor={'gray'}
@@ -63,9 +74,27 @@ export default function Search() {
           />
         </View>
       </View>
-      <Text>{filteredVideos?.length}</Text>
+      <Text>
+        {debouncedQuery && (
+          <Text
+            style={{
+              fontSize: 10,
+              color: palette.primary,
+              fontFamily: 'PoppinsRegular',
+            }}
+          >
+            {filteredVideos?.length} results found for: "
+            <Text style={{ fontFamily: 'PoppinsSemiBold', fontSize: 10, color: palette.primary }}>{query}</Text>"
+          </Text>
+        )}
+      </Text>
       {debouncedQuery ? (
-        <FlatList data={filteredVideos} renderItem={renderItem} keyExtractor={(item) => item.id.videoId} />
+        <FlatList
+          data={filteredVideos}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.videoId}
+          showsVerticalScrollIndicator={false}
+        />
       ) : (
         <View style={styles.emptyState}>
           <Text>Type something to search...</Text>
@@ -85,7 +114,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
     marginTop: 10,
     marginBottom: 5,
   },
@@ -95,12 +123,14 @@ const styles = StyleSheet.create({
     backgroundColor: palette.white,
     borderWidth: 2,
     borderColor: palette.primary,
-    borderRadius: 10,
+    borderRadius: 16,
     paddingHorizontal: 10,
     flex: 1,
   },
-  icon: {
-    marginRight: 10,
+  channelTitle: {
+    fontSize: 12,
+    fontFamily: 'PoppinsSemiBold',
+    paddingVertical: 12,
   },
   searchInput: {
     flex: 1,
@@ -109,35 +139,45 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
     textAlignVertical: 'center',
     backgroundColor: palette.white,
+    marginLeft: 14,
+    fontSize: 16,
+    marginTop: 2,
   },
   flatList: {
     paddingLeft: 15,
     marginTop: 10,
   },
   videoTitle: {
-    marginTop: 5,
     fontSize: 16,
     color: palette.black,
   },
   textContainer: {
-    marginTop: 5,
+    marginBottom: 24,
+  },
+  textRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  textColumn: {
+    flex: 1,
   },
   publishTime: {
-    fontSize: 12,
+    fontSize: 10,
+    fontFamily: 'PoppinsRegular',
     color: 'gray',
-    marginTop: 2,
+    marginTop: 12,
+    textAlign: 'right',
+    paddingLeft: 10,
   },
   emptyState: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  thumbnail: {
+    width: '100%',
+    height: screenWidth * 0.5,
+    borderRadius: 10,
+  },
 })
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: 'white',
-//     paddingHorizontal: 16, // Example padding
-//   },
-// })

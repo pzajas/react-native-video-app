@@ -36,8 +36,6 @@ const TabSwitcher = ({
   const queryClient = useQueryClient()
   const params = useLocalSearchParams()
 
-  console.log(params, 'stats from tabswitcher')
-
   const NOTES_KEY = `video_notes_${videoId}`
 
   const {
@@ -53,7 +51,6 @@ const TabSwitcher = ({
     },
   })
 
-  // Mutation to add a new note
   const mutation = useMutation<Note[], unknown, string>({
     mutationFn: async (newNote) => {
       const updatedNotes = [...(notes || []), newNote]
@@ -84,7 +81,7 @@ const TabSwitcher = ({
           <>
             <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginBottom: 8 })}>Destcription</Text>
             <Text style={(styles.contentText, { fontFamily: 'PoppinsMedium', fontSize: 12 })}>
-              {params?.description.length > 0 ? params?.description : 'No description yet...'}
+              {params?.description?.length > 0 ? params?.description : 'No description yet...'}
             </Text>
 
             <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginVertical: 16 })}>Statistics</Text>
@@ -95,7 +92,6 @@ const TabSwitcher = ({
                 icon={<ViewsIcon color={'white'} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
-                onPress={() => console.log('ppp')}
                 width="45%"
               />
               <PrimaryButton
@@ -103,7 +99,6 @@ const TabSwitcher = ({
                 icon={<LikesIcon color={'white'} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
-                onPress={() => console.log('ppp')}
                 width="50%"
               />
             </View>
