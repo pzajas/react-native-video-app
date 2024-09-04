@@ -11,14 +11,16 @@ export default function PagesLayout() {
           title: 'Settings',
           headerStyle: { backgroundColor: palette.white },
           headerTintColor: palette.primary,
+          headerShown: true,
         }}
       />
       <Stack.Screen
-        name="video/index"
+        name="video/[id]"
         options={{
           title: 'Video',
           headerStyle: { backgroundColor: palette.primary },
           headerTintColor: palette.white,
+          headerShown: true,
         }}
       />
     </Stack>
