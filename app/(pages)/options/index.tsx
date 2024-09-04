@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { View, Text, StyleSheet, Switch } from 'react-native'
 import palette from '@/constants/palette'
 import ChannelIcon from '@/assets/icons/ChannelIcon'
+import NotificationIcon from '@/assets/icons/NotificationIcon'
+import ClockIcon from '@/assets/icons/ClockIcon'
 
 export default function Options() {
   const [isEnabled, setIsEnabled] = useState(false)
@@ -9,25 +11,51 @@ export default function Options() {
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState)
 
   return (
-    <View style={styles.container}>
-      <View style={styles.profileContainer}>
-        <ChannelIcon />
-        <Text style={styles.profileName}>John Doe</Text>
-      </View>
+    <>
+      <View style={styles.container}>
+        <View
+          style={{
+            borderBottomWidth: 2,
+            borderBottomColor: palette.primary,
+            width: '100%',
+            paddingBottom: 48,
+            paddingTop: 12,
+          }}
+        >
+          <View style={styles.profileContainer}>
+            <ChannelIcon />
+            <Text style={styles.profileName}>John Doe</Text>
+          </View>
+        </View>
 
-      <Text style={styles.optionsText}>Options Screen</Text>
+        <View style={{ flexDirection: 'column', paddingHorizontal: 30, justifyContent: 'center', marginTop: 15 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginLeft: -8 }}>
+            <NotificationIcon />
+            <Text style={{ fontSize: 14, fontFamily: 'PoppinsRegular' }}>Learning reminders</Text>
+          </View>
 
-      <View style={styles.reportContainer}>
-        <Text style={styles.reportText}>Report every day at 12:00</Text>
-        <Switch
-          trackColor={{ false: palette.grey, true: palette.primary }}
-          thumbColor={isEnabled ? palette.white : palette.black}
-          ios_backgroundColor={palette.grey}
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
+          <View style={styles.reportContainer}>
+            <Text style={styles.reportText}>Report everyday at:</Text>
+
+            <View style={styles.timeContainer}>
+              <ClockIcon />
+              <Text style={{ fontFamily: 'PoppinsRegular', fontSize: 12 }}>12:00</Text>
+            </View>
+
+            <Switch
+              trackColor={{ false: palette.grey, true: palette.primary }}
+              thumbColor={isEnabled ? palette.white : palette.black}
+              ios_backgroundColor={palette.grey}
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
+          <Text style={{ fontFamily: 'PoppinsSemiBold', fontSize: 10, marginTop: 18 }}>
+            You will receive friendly reminder to remember to study
+          </Text>
+        </View>
       </View>
-    </View>
+    </>
   )
 }
 
@@ -35,8 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: palette.white,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   goBackButton: {
     flexDirection: 'row',
@@ -61,7 +87,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   profileName: {
-    fontSize: 24,
+    fontSize: 14,
+    fontFamily: 'PoppinsExtraBold',
     color: palette.black,
   },
   optionsText: {
@@ -71,13 +98,19 @@ const styles = StyleSheet.create({
   },
   reportContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '80%',
-    marginTop: 40,
+    justifyContent: 'space-between',
+    marginTop: 20,
   },
   reportText: {
-    fontSize: 18,
+    fontSize: 12,
+    fontFamily: 'PoppinsRegular',
     color: palette.black,
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    alignItems: 'center',
+    marginVertical: 10,
   },
 })

@@ -5,15 +5,11 @@ import { MainScreenIcon } from '@/assets/icons/MainScreenIcon'
 import { Footer } from '@/screens/mainScreen/Fotter'
 import { Header } from '@/screens/mainScreen/Header'
 import { PrimaryButton } from '@/components/buttons/PrimaryButton'
-import palette from '@/constants/palette'
 import { fetchVideosData } from '@/api/fetchVideos'
-import { useEffect } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import palette from '@/constants/palette'
 
 export default function WelcomeScreen() {
-  useEffect(() => {
-    fetchVideosData()
-  }, [])
-
   const router = useRouter()
 
   const handleNavigateHome = () => {
@@ -26,7 +22,6 @@ export default function WelcomeScreen() {
       <MainScreenIcon style={styles.icon} />
       <View style={styles.infoContainer}>
         <Text style={styles.welcomeText}>Welcome to the best YouTube app base learning application</Text>
-
         <PrimaryButton
           width="100%"
           text="Log in as a guest"
@@ -34,7 +29,6 @@ export default function WelcomeScreen() {
           fontSize={16}
           onPress={handleNavigateHome}
         />
-
         <Footer />
       </View>
     </SafeAreaView>
