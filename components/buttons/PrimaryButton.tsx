@@ -6,7 +6,7 @@ interface IPrimaryButton {
   fontFamily: string
   fontSize: number
   icon?: React.ReactNode
-  onPress: () => void
+  onPress?: () => void
 }
 
 export const PrimaryButton = ({ width, text, fontFamily, fontSize, icon, onPress }: IPrimaryButton) => {

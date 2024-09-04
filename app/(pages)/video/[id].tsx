@@ -1,11 +1,10 @@
 import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import TabSwitcher from '@/components/TabSwitcher'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import palette from '@/constants/palette'
 import ChannelIcon from '@/assets/icons/ChannelIcon'
 import VideoPlayer from '@/VideoPlayer'
-import getVideoDetails from '@/api/fetchVideo'
 
 export default function VideoPage() {
   const [videoUrl, setVideoUrl] = useState('')
@@ -14,19 +13,6 @@ export default function VideoPage() {
 
   const videoId = params.id as string
   const videoTitle = params.title
-
-  // useEffect(() => {
-  //   const fetchVideoUrl = async () => {
-  //     try {
-  //       const url = await getVideoDetails(videoId)
-  //       setVideoUrl(url)
-  //     } catch (error) {
-  //       console.error('Error fetching video URL:', error)
-  //     }
-  //   }
-
-  //   fetchVideoUrl()
-  // }, [videoId])
 
   if (videoUrl === null) {
     return (

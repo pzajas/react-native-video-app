@@ -1,4 +1,3 @@
-// app/_layout.js
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
@@ -7,16 +6,12 @@ import { DarkTheme, DefaultTheme } from '@react-navigation/native'
 import { useColorScheme } from '@/components/useColorScheme'
 import { Stack } from 'expo-router'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { PaperProvider } from 'react-native-paper'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Options from './(pages)/options'
+import { QueryClient } from '@tanstack/react-query'
 import palette from '@/constants/palette'
-import { TouchableOpacity, Text, SafeAreaView, StyleSheet } from 'react-native'
-import { Feather } from '@expo/vector-icons'
+import { StyleSheet } from 'react-native'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { CardStyleInterpolators } from '@react-navigation/stack'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -69,6 +64,6 @@ function RootLayoutNav() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: palette.background, // Set your preferred background color
+    backgroundColor: palette.background,
   },
 })

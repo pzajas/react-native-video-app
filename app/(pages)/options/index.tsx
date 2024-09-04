@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20, // Adjust this margin for spacing
+    marginTop: 20,
   },
   profileName: {
     fontSize: 24,
@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
   optionsText: {
     fontSize: 24,
     color: palette.black,
-    marginTop: 20, // Adjust this margin for spacing
+    marginTop: 20,
   },
   reportContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '80%',
-    marginTop: 40, // Adjust this margin for spacing
+    marginTop: 40,
   },
   reportText: {
     fontSize: 18,
