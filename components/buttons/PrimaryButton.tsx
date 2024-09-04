@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1F1F2E',
   },
   iconContainer: {
-    marginRight: 8,
+    marginRight: 24,
   },
   text: {
     color: 'white',

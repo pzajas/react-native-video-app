@@ -1,61 +1,85 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import { PrimaryButton } from '@/components/buttons/PrimaryButton'
-import { HomeIcon } from '@/assets/icons/HomeIcon'
 import TabSwitcher from '@/components/TabSwitcher'
+import { useEffect, useState } from 'react'
+import palette from '@/constants/palette'
+import ChannelIcon from '@/assets/icons/ChannelIcon'
+import VideoPlayer from '@/VideoPlayer'
+import getVideoDetails from '@/api/fetchVideo'
 
 export default function VideoPage() {
+  const [videoUrl, setVideoUrl] = useState('')
+  const [selectedTab, setSelectedTab] = useState('Details')
   const params = useLocalSearchParams()
-  const videoId = params.id as string
 
-  const videoTitle = `Video Title for ID ${videoId}`
+  const videoId = params.id as string
+  const videoTitle = params.title
+
+  // useEffect(() => {
+  //   const fetchVideoUrl = async () => {
+  //     try {
+  //       const url = await getVideoDetails(videoId)
+  //       setVideoUrl(url)
+  //     } catch (error) {
+  //       console.error('Error fetching video URL:', error)
+  //     }
+  //   }
+
+  //   fetchVideoUrl()
+  // }, [videoId])
+
+  if (videoUrl === null) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Loading or no video URL available...</Text>
+      </View>
+    )
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={{ width: '100%', height: 300, backgroundColor: 'red' }} />
-      <Text style={styles.title}>{videoTitle}</Text>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <ScrollView style={styles.container}>
+        <View style={{ width: '100%' }}>
+          <VideoPlayer />
+          <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+            {videoTitle}
+          </Text>
 
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={styles.title}>Avatar</Text>
-        <Text style={styles.title}>Channel name</Text>
-      </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+              paddingHorizontal: 16,
+              paddingVertical: 16,
+            }}
+          >
+            <ChannelIcon />
+            <Text style={{ fontFamily: 'PoppinsBold', fontSize: 14, marginLeft: 12 }}>{params.channelTitle}</Text>
+          </View>
 
-      <TabSwitcher />
-
-      <View>
-        <Text style={{ color: 'white' }}>Stats</Text>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <PrimaryButton
-            text="views"
-            icon={<HomeIcon color={'white'} />}
-            fontFamily="PoppinsMedium"
-            fontSize={14}
-            onPress={() => console.log('ppp')}
-            width="45%"
-          />
-          <PrimaryButton
-            text="views"
-            icon={<HomeIcon color={'white'} />}
-            fontFamily="PoppinsMedium"
-            fontSize={14}
-            onPress={() => console.log('ppp')}
-            width="50%"
-          />
+          <TabSwitcher videoId={videoId} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
         </View>
-      </View>
-    </View>
+
+        <View style={{ paddingHorizontal: 16 }}>
+          <View>
+            <Text style={{ color: 'white' }}>Stats</Text>
+          </View>
+        </View>
+      </ScrollView>
+    </TouchableWithoutFeedback>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: palette.white,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontFamily: 'PoppinsBold',
+    fontSize: 18,
+    color: palette.primary,
+    marginTop: 20,
+    paddingHorizontal: 16,
   },
 })

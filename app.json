@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.twg.reactnativeapp"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +32,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "56f445d0-f9e2-42a7-baa5-0cbf0de9fe27"
+      }
     }
   }
 }

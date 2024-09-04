@@ -1,0 +1,90 @@
+{
+  "build": {
+    "preview": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "preview2": {
+      "android": {
+        "gradleCommand": ":app:assembleRelease"
+      },
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "preview3": {
+      "developmentClient": true,
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "preview:dev": {
+      "developmentClient": true,
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "preview:prod": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    },
+    "production": {
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
+        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
+        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
+        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
+        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
+        "EXPO_OWNER": "${EXPO_OWNER}"
+      }
+    }
+  }
+}

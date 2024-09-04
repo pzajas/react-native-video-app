@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 const API_KEY = 'AIzaSyCWAMHzv5iEshbOSUGoDCfGMU_T6CkzqEY'
-const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search'
+const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/videos'
 
 export const fetchVideos = async (query) => {
   try {
     const response = await axios.get(YOUTUBE_API_URL, {
       params: {
-        part: 'snippet',
+        part: 'snippet, statistics',
         q: query,
         type: 'video',
         maxResults: 100,

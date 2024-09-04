@@ -1,5 +1,4 @@
 import { Tabs } from 'expo-router'
-import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { HomeIcon } from '@/assets/icons/HomeIcon'
 import { SearchIcon } from '@/assets/icons/SearchIcon'
 import palette from '@/constants/palette'
@@ -10,7 +9,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: palette.primary,
         tabBarInactiveTintColor: palette.white,
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: false,
         tabBarStyle: {
           backgroundColor: palette.background,
           paddingBottom: 5,

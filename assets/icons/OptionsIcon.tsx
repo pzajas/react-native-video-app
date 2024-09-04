@@ -2,7 +2,14 @@ import palette from '@/constants/palette'
 import Svg, { SvgProps, Path } from 'react-native-svg'
 
 export const OptionsIcon = (props: SvgProps) => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width={28} height={30} fill="none" {...props}>
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={28}
+    height={30}
+    fill="none"
+    {...props}
+    style={{ marginLeft: 20, marginRight: 10 }}
+  >
     <Path stroke={palette.primary} strokeWidth={2} d="M14 19a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
     <Path
       stroke={palette.primary}
