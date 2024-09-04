@@ -1,12 +1,25 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import palette from '@/constants/palette'
+import { useRouter } from 'expo-router'
 
 export const VideosSlider = ({ data, title, renderItem }: any) => {
+  const router = useRouter()
+
   return (
     <View style={(styles.componentContrainer, { borderTopWidth: title === 'React Native' ? 0 : 2 })}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{title}</Text>
-        <Text style={styles.subText}>Show More</Text>
+        <Text
+          style={styles.subText}
+          onPress={() => {
+            router.push({
+              pathname: '/(tabs)/search',
+              params: { title },
+            })
+          }}
+        >
+          Show More
+        </Text>
       </View>
       <FlatList
         data={data}
