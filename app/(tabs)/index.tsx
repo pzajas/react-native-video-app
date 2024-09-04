@@ -1,23 +1,14 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native'
+import { StyleSheet, Text, TextInput, View, Image, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { OptionsIcon } from '@/assets/icons/OptionsIcon'
-import Feather from 'react-native-vector-icons/Feather'
-import palette from '@/constants/palette'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
-import { queryClient } from '@/api/queryClient'
 import { getFormattedDate } from '@/utils/dates/getFormattedDate'
 import { useState } from 'react'
+import { VideosSlider } from '@/components/sliders/videoSlider'
+import { fetchVideosData } from '@/api/fetchVideos'
+import Feather from 'react-native-vector-icons/Feather'
+import palette from '@/constants/palette'
 
 const { width: screenWidth } = Dimensions.get('window')
 
@@ -27,7 +18,7 @@ export default function VideoListScreen() {
 
   const { data: videos } = useQuery({
     queryKey: ['videos'],
-    queryFn: () => queryClient.getQueryData<any[]>(['videos']) || [],
+    queryFn: fetchVideosData,
     staleTime: Infinity,
   })
 
@@ -54,7 +45,7 @@ export default function VideoListScreen() {
       >
         <Image source={{ uri: item.snippet.thumbnails.high.url }} style={styles.thumbnail} />
         <View style={styles.textContainer}>
-          <Text style={styles.videoTitle} numberOfLines={1}>
+          <Text style={styles.videoTitle} numberOfLines={2}>
             {item.snippet.title}
           </Text>
           <Text style={styles.publishTime}>{formattedPublishTime}</Text>
@@ -82,70 +73,10 @@ export default function VideoListScreen() {
             <OptionsIcon />
           </TouchableOpacity>
         </View>
-
-        <View style={{ marginBottom: 13 }}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>React Native</Text>
-            <Text style={{ textDecorationLine: 'underline', color: palette.primary }}>Show More</Text>
-          </View>
-          <FlatList
-            data={reactNativeVideos}
-            renderItem={renderItem}
-            keyExtractor={(item) => item?.id?.videoId}
-            style={styles.flatList}
-            horizontal
-            contentContainerStyle={{ gap: 10 }}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-
-        <View style={{ marginBottom: 13, borderTopWidth: 2, borderTopColor: palette.primary }}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>React</Text>
-            <Text style={{ textDecorationLine: 'underline', color: palette.primary }}>Show More</Text>
-          </View>
-          <FlatList
-            data={reactVideos}
-            renderItem={renderItem}
-            keyExtractor={(item) => item?.id?.videoId}
-            style={styles.flatList}
-            horizontal
-            contentContainerStyle={{ gap: 10 }}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-
-        <View style={{ marginBottom: 13, borderTopWidth: 2, borderTopColor: palette.primary }}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>TypeScript</Text>
-            <Text style={{ textDecorationLine: 'underline', color: palette.primary }}>Show More</Text>
-          </View>
-          <FlatList
-            data={typescriptVideos}
-            renderItem={renderItem}
-            keyExtractor={(item) => item?.id?.videoId}
-            style={styles.flatList}
-            horizontal
-            contentContainerStyle={{ gap: 10 }}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-
-        <View style={{ marginBottom: 13, borderTopWidth: 2, borderTopColor: palette.primary }}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>JavaScript</Text>
-            <Text style={{ textDecorationLine: 'underline', color: palette.primary }}>Show More</Text>
-          </View>
-          <FlatList
-            data={javascriptVideos}
-            renderItem={renderItem}
-            keyExtractor={(item) => item?.id?.videoId}
-            style={styles.flatList}
-            horizontal
-            contentContainerStyle={{ gap: 10 }}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
+        <VideosSlider data={reactNativeVideos} renderItem={renderItem} title={'React Native'} />
+        <VideosSlider data={reactVideos} renderItem={renderItem} title={'React'} />
+        <VideosSlider data={typescriptVideos} renderItem={renderItem} title={'Typescript'} />
+        <VideosSlider data={javascriptVideos} renderItem={renderItem} title={'Javascript'} />
       </ScrollView>
     </SafeAreaView>
   )
@@ -200,25 +131,28 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   videoContainer: {
-    width: screenWidth * 0.5,
+    width: screenWidth * 0.45,
     marginRight: 10,
   },
   thumbnail: {
     width: '100%',
-    height: screenWidth * 0.3,
+    height: screenWidth * 0.28,
     borderRadius: 10,
   },
   videoTitle: {
     marginTop: 5,
-    fontSize: 16,
-    color: palette.black,
+    fontSize: 12,
+    color: palette.primary,
+    fontFamily: 'PoppinsSemiBold',
   },
   textContainer: {
     marginTop: 5,
+    marginBottom: 16,
   },
   publishTime: {
-    fontSize: 12,
-    color: 'gray',
-    marginTop: 2,
+    fontSize: 10,
+    fontFamily: 'PoppinsRegular',
+    color: palette.grey,
+    alignSelf: 'flex-end',
   },
 })

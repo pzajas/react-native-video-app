@@ -11,16 +11,26 @@ export const fetchVideosData = async () => {
         part: 'snippet',
         q: 'React, React Native, JavaScript, TypeScript',
         type: 'video',
-        maxResults: 100,
+        maxResults: 50,
         key: API_KEY,
       },
     })
 
     const videos = response.data.items
+    console.log(videos, 'videos from fetch')
 
     queryClient.setQueryData(['videos'], videos)
+    return videos
   } catch (error) {
-    console.error('Error fetching videos data:', error)
-    console.error('Error fetching videos data:', error)
+    if (error.response) {
+      console.error('Error response:', error.response.data)
+      console.error('Error status:', error.response.status)
+      console.error('Error headers:', error.response.headers)
+    } else if (error.request) {
+      console.error('Error request:', error.request)
+    } else {
+      console.error('Error message:', error.message)
+    }
+    console.error('Error config:', error.config)
   }
 }
