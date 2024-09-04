@@ -18,12 +18,7 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "env": {
-        "EXPO_PUBLIC_FB_APP_ID": "${EXPO_PUBLIC_FB_APP_ID}",
-        "EXPO_PUBLIC_FB_CLIENT_TOKEN": "${EXPO_PUBLIC_FB_CLIENT_TOKEN}",
-        "EXPO_IOS_BUNDLE_IDENTIFIER": "${EXPO_IOS_BUNDLE_IDENTIFIER}",
-        "EXPO_ANDROID_PACKAGE": "${EXPO_ANDROID_PACKAGE}",
-        "EXPO_PROJECT_ID": "${EXPO_PROJECT_ID}",
-        "EXPO_OWNER": "${EXPO_OWNER}"
+        "EXPO_API_KEY": "AIzaSyCWAMHzv5iEshbOSUGoDCfGMU_T6CkzqEY"
       }
     },
     "preview3": {

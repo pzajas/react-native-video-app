@@ -1,23 +1,27 @@
 import axios from 'axios'
+import { queryClient } from './queryClient'
+import { API_KEY } from '@env'
 
-const API_KEY = 'AIzaSyCWAMHzv5iEshbOSUGoDCfGMU_T6CkzqEY'
-const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/videos'
+console.log(API_KEY, 'from fetch')
 
-export const fetchVideos = async (query) => {
+const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3/search'
+
+export const fetchVideosData = async () => {
   try {
     const response = await axios.get(YOUTUBE_API_URL, {
       params: {
-        part: 'snippet, statistics',
-        q: query,
+        part: 'snippet',
+        q: 'React, React Native, JavaScript, TypeScript',
         type: 'video',
         maxResults: 100,
         key: API_KEY,
       },
     })
 
-    return response.data.items
+    const videos = response.data.items
+
+    queryClient.setQueryData(['videos'], videos)
   } catch (error) {
-    console.error('Error fetching videos:', error)
-    return []
+    console.error('Error fetching videos data:', error)
   }
 }
