@@ -6,8 +6,14 @@ import { Footer } from '@/screens/mainScreen/Fotter'
 import { Header } from '@/screens/mainScreen/Header'
 import { PrimaryButton } from '@/components/buttons/PrimaryButton'
 import palette from '@/constants/palette'
+import { fetchVideosData } from '@/api/fetchVideos'
+import { useEffect } from 'react'
 
 export default function WelcomeScreen() {
+  useEffect(() => {
+    fetchVideosData()
+  }, [])
+
   const router = useRouter()
 
   const handleNavigateHome = () => {
