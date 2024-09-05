@@ -1,9 +1,16 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
-import palette from '@/constants/palette'
 import { useRouter } from 'expo-router'
+import palette from '@/constants/palette'
 
 export const VideosSlider = ({ data, title, renderItem }: any) => {
   const router = useRouter()
+
+  const handlePress = (item: any) => {
+    router.push({
+      pathname: `/video/${item.id.videoId}`,
+      params: item.snippet,
+    })
+  }
 
   return (
     <View style={(styles.componentContrainer, { borderTopWidth: title === 'React Native' ? 0 : 2 })}>
@@ -23,7 +30,7 @@ export const VideosSlider = ({ data, title, renderItem }: any) => {
       </View>
       <FlatList
         data={data}
-        renderItem={renderItem}
+        renderItem={({ item }) => renderItem({ item, onPress: handlePress })}
         keyExtractor={(item) => item?.id?.videoId}
         style={styles.flatList}
         horizontal

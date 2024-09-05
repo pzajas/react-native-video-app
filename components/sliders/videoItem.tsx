@@ -1,6 +1,7 @@
 import { Text, View, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native'
 import { getFormattedDate } from '@/utils/dates/getFormattedDate'
 import palette from '@/constants/palette'
+import { useRouter } from 'expo-router'
 
 const { width: screenWidth } = Dimensions.get('window')
 
