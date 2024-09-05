@@ -8,7 +8,7 @@ import palette from '@/constants/palette'
 
 export default function VideoPage() {
   const [videoUrl, setVideoUrl] = useState('')
-  const [currentTime, setCurrentTime] = useState('00:00')
+  const [currentTime, setCurrentTime] = useState<number>(0)
   const [selectedTab, setSelectedTab] = useState('Details')
   const params = useLocalSearchParams()
 
@@ -27,7 +27,7 @@ export default function VideoPage() {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={{ width: '100%' }}>
-          <VideoPlayer setCurrentTime={setCurrentTime} />
+          <VideoPlayer currentTime={currentTime} setCurrentTime={setCurrentTime} />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {videoTitle}
           </Text>

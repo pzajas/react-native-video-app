@@ -4,10 +4,11 @@ import { useState, useEffect, useCallback } from 'react'
 import { queryClient } from '@/api/queryClient'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
-import { SearchInput, SearchedItem, DataLoading, EmptyQuery } from '@/components/search'
+import { SearchInput, SearchedItem, EmptyQuery } from '@/components/search'
 import { SearchResultsText } from '@/components/search/searchResultText'
 import debounce from 'lodash/debounce'
 import palette from '@/constants/palette'
+import { LoadingIndicator } from '@/components/indicators/loadingIndicator'
 
 export default function Search() {
   const { title } = useLocalSearchParams()
@@ -60,7 +61,7 @@ export default function Search() {
         <SearchInput query={query} onChange={handleSearchChange} />
       </View>
       {isLoading || loading ? (
-        <DataLoading />
+        <LoadingIndicator />
       ) : (
         <>
           <SearchResultsText query={query} filteredVideos={filteredVideos} />

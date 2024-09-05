@@ -1,22 +1,22 @@
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, ActivityIndicator, View } from 'react-native'
 import palette from '@/constants/palette'
 
 export const LoadingIndicator = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color={palette.primary} />
-      <Text style={styles.text}>Filtering results...</Text>
+      <Text style={styles.loadingText}>Filtering results...</Text>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
+  loadingText: {
     fontSize: 16,
     color: palette.primary,
     marginTop: 10,
