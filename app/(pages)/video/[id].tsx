@@ -8,6 +8,7 @@ import VideoPlayer from '@/VideoPlayer'
 
 export default function VideoPage() {
   const [videoUrl, setVideoUrl] = useState('')
+  const [currentTime, setCurrentTime] = useState('00:00')
   const [selectedTab, setSelectedTab] = useState('Details')
   const params = useLocalSearchParams()
 
@@ -26,7 +27,7 @@ export default function VideoPage() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScrollView style={styles.container}>
         <View style={{ width: '100%' }}>
-          <VideoPlayer />
+          <VideoPlayer setCurrentTime={setCurrentTime} />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {videoTitle}
           </Text>
@@ -44,7 +45,12 @@ export default function VideoPage() {
             <Text style={{ fontFamily: 'PoppinsBold', fontSize: 14, marginLeft: 12 }}>{params.channelTitle}</Text>
           </View>
 
-          <TabSwitcher videoId={videoId} setSelectedTab={setSelectedTab} selectedTab={selectedTab} />
+          <TabSwitcher
+            videoId={videoId}
+            setSelectedTab={setSelectedTab}
+            selectedTab={selectedTab}
+            currentTime={currentTime}
+          />
         </View>
 
         <View style={{ paddingHorizontal: 16 }}>

@@ -1,14 +1,22 @@
 import Video from 'react-native-video'
 import { View, StyleSheet } from 'react-native'
+import { useState } from 'react'
 
-const VideoPlayer = () => {
+const VideoPlayer = ({ setCurrentTime }: any) => {
+  const handleProgress = (data) => {
+    const minutes = Math.floor(data.currentTime / 60)
+    const seconds = Math.floor(data.currentTime % 60)
+    setCurrentTime(`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`)
+  }
+
   return (
     <View style={styles.container}>
       <Video
-        source={require('./assets/videos/broadchurch.mp4')}
+        source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
         style={styles.video}
         controls={true}
         resizeMode="cover"
+        onProgress={handleProgress}
       />
     </View>
   )

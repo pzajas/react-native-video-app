@@ -18,7 +18,7 @@ import { PrimaryButton } from './buttons/PrimaryButton'
 import LikesIcon from '@/assets/icons/LikesIcon'
 import ViewsIcon from '@/assets/icons/ViewsIcon'
 
-type Note = string
+type Note = { text: string; time: string }
 interface FormData {
   note: string
 }
@@ -27,10 +27,12 @@ const TabSwitcher = ({
   videoId,
   selectedTab,
   setSelectedTab,
+  currentTime,
 }: {
   videoId: string
   selectedTab: any
   setSelectedTab: any
+  currentTime: string
 }) => {
   const { control, handleSubmit, reset } = useForm<FormData>({ defaultValues: { note: '' } })
   const queryClient = useQueryClient()
@@ -51,7 +53,7 @@ const TabSwitcher = ({
     },
   })
 
-  const mutation = useMutation<Note[], unknown, string>({
+  const mutation = useMutation<Note[], unknown, Note>({
     mutationFn: async (newNote) => {
       const updatedNotes = [...(notes || []), newNote]
       await AsyncStorage.setItem(NOTES_KEY, JSON.stringify(updatedNotes))
@@ -67,7 +69,8 @@ const TabSwitcher = ({
   })
 
   const onSubmit = (data: FormData) => {
-    mutation.mutate(data.note)
+    const noteWithTime = { text: data.note, time: currentTime }
+    mutation.mutate(noteWithTime)
     reset()
   }
 
@@ -79,12 +82,12 @@ const TabSwitcher = ({
       case 'Details':
         return (
           <>
-            <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginBottom: 8 })}>Destcription</Text>
-            <Text style={(styles.contentText, { fontFamily: 'PoppinsMedium', fontSize: 12 })}>
+            <Text style={[styles.contentText, { fontFamily: 'PoppinsExtraBold', marginBottom: 8 }]}>Description</Text>
+            <Text style={[styles.contentText, { fontFamily: 'PoppinsMedium', fontSize: 12 }]}>
               {params?.description?.length > 0 ? params?.description : 'No description yet...'}
             </Text>
 
-            <Text style={(styles.contentText, { fontFamily: 'PoppinsExtraBold', marginVertical: 16 })}>Statistics</Text>
+            <Text style={[styles.contentText, { fontFamily: 'PoppinsExtraBold', marginVertical: 16 }]}>Statistics</Text>
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <PrimaryButton
@@ -110,7 +113,8 @@ const TabSwitcher = ({
             <View>
               {notes?.map((note, index) => (
                 <Text key={index} style={styles.noteText}>
-                  {note}
+                  {note.text}
+                  <Text style={styles.noteTime}> ({note.time})</Text>
                 </Text>
               ))}
             </View>
@@ -148,13 +152,13 @@ const TabSwitcher = ({
             style={[styles.tabButton, selectedTab === 'Details' && styles.activeTab]}
             onPress={() => setSelectedTab('Details')}
           >
-            <Text style={(styles.tabText, { fontFamily: 'PoppinsExtraBold' })}>Details</Text>
+            <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Details</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.tabButton, selectedTab === 'Notes' && styles.activeTab]}
             onPress={() => setSelectedTab('Notes')}
           >
-            <Text style={(styles.tabText, { fontFamily: 'PoppinsExtraBold' })}>Notes</Text>
+            <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Notes</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.contentContainer}>{renderContent()}</View>
@@ -205,6 +209,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: 'lightgray',
     fontFamily: 'PoppinsRegular',
+  },
+  noteTime: {
+    fontSize: 10,
+    color: 'darkgrey',
   },
   noteForm: {
     flexDirection: 'column',
