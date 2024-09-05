@@ -193,18 +193,18 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTab: {
-    borderBottomColor: palette.grey,
+    borderBottomColor: palette.primary,
   },
   tabText: {
     fontSize: 12,
-    color: palette.grey,
+    color: palette.primary,
   },
   contentContainer: {
     marginTop: 20,
   },
   contentText: {
     fontSize: 10,
-    color: palette.grey,
+    color: palette.primary,
     marginBottom: 10,
   },
   notesScrollView: {

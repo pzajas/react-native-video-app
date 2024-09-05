@@ -1,10 +1,10 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
-import TabSwitcher from '@/components/TabSwitcher'
 import { useState } from 'react'
-import palette from '@/constants/palette'
 import ChannelIcon from '@/assets/icons/ChannelIcon'
 import VideoPlayer from '@/components/player/VideoPlayer'
+import TabSwitcher from '@/components/TabSwitcher'
+import palette from '@/constants/palette'
 
 export default function VideoPage() {
   const [videoUrl, setVideoUrl] = useState('')

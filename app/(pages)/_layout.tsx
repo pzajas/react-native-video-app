@@ -1,7 +1,7 @@
 import { Stack, useRouter } from 'expo-router'
-import palette from '@/constants/palette'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import ArrowLeft from '@/assets/icons/ArrowLeft'
+import palette from '@/constants/palette'
 
 export default function PagesLayout() {
   const router = useRouter()
@@ -14,9 +14,9 @@ export default function PagesLayout() {
           title: 'Settings',
           headerStyle: { backgroundColor: palette.white },
           headerTintColor: palette.primary,
-          headerShown: false,
+          headerShown: true,
           headerShadowVisible: false,
-          headerLeft: ({ navigation }: any) => (
+          headerLeft: () => (
             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
               <ArrowLeft color={palette.primary} />
             </TouchableOpacity>
@@ -42,10 +42,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
     marginRight: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    marginLeft: 5,
-    color: palette.primary,
   },
 })
