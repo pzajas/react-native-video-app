@@ -16,7 +16,7 @@ export const filterVideos = ({ videos, categories }: FilterVideosParams) => {
     Object.entries(categories).map(([title, keyword]) => [
       title,
       keyword === 'react'
-        ? getFilteredVideos({ videos, keyword }).filter(
+        ? getFilteredVideos({ videos, keyword })?.filter(
             (video: Video) => !video.snippet.title.toLowerCase().includes('react native')
           )
         : getFilteredVideos({ videos, keyword }),

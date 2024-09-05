@@ -6,8 +6,8 @@ import { fetchVideosData } from '@/api/fetchVideos'
 import { SearchInput } from '@/components/search/searchInput'
 import { VideoItem } from '@/components/sliders/videoItem'
 import { videoCategories } from '@/utils/configs/videoCategories'
-import palette from '@/constants/palette'
 import { filterVideos } from '@/utils/arrays/filterVideos'
+import palette from '@/constants/palette'
 
 export default function VideoListScreen() {
   const { data: videos } = useQuery({

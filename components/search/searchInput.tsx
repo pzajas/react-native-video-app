@@ -11,7 +11,7 @@ export const SearchInput = ({ query, onChange }: any) => {
   const currentRoute = route?.name
 
   return (
-    <View style={styles.searchContainer}>
+    <View style={[styles.searchContainer, { paddingHorizontal: currentRoute === 'index' ? 5 : 0 }]}>
       <View style={styles.inputContainer}>
         <Feather name="search" size={25} color={palette.grey} style={styles.icon} />
         <TextInput
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10,
     marginTop: 10,
     marginBottom: 5,
   },

@@ -1,4 +1,3 @@
-import palette from '@/constants/palette'
 import Svg, { SvgProps, Path } from 'react-native-svg'
 
 const LikesIcon = (props: SvgProps) => (
