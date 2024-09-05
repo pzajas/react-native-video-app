@@ -17,8 +17,6 @@ export const fetchVideosData = async () => {
     })
 
     const videos = response.data.items
-    console.log(videos, 'videos from fetch')
-
     queryClient.setQueryData(['videos'], videos)
     return videos
   } catch (error) {
