@@ -1,10 +1,10 @@
-import { Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useLocalSearchParams } from 'expo-router'
 import TabSwitcher from '@/components/TabSwitcher'
 import { useState } from 'react'
 import palette from '@/constants/palette'
 import ChannelIcon from '@/assets/icons/ChannelIcon'
-import VideoPlayer from '@/VideoPlayer'
+import VideoPlayer from '@/components/player/VideoPlayer'
 
 export default function VideoPage() {
   const [videoUrl, setVideoUrl] = useState('')
@@ -24,25 +24,17 @@ export default function VideoPage() {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={{ width: '100%' }}>
           <VideoPlayer setCurrentTime={setCurrentTime} />
           <Text style={styles.title} numberOfLines={1} ellipsizeMode="tail">
             {videoTitle}
           </Text>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-              paddingHorizontal: 16,
-              paddingVertical: 16,
-            }}
-          >
+          <View style={styles.channelContainer}>
             <ChannelIcon />
-            <Text style={{ fontFamily: 'PoppinsBold', fontSize: 14, marginLeft: 12 }}>{params.channelTitle}</Text>
+            <Text style={styles.channelTitle}>{params.channelTitle}</Text>
           </View>
 
           <TabSwitcher
@@ -52,20 +44,18 @@ export default function VideoPage() {
             currentTime={currentTime}
           />
         </View>
-
-        <View style={{ paddingHorizontal: 16 }}>
-          <View>
-            <Text style={{ color: 'white' }}>Stats</Text>
-          </View>
-        </View>
       </ScrollView>
-    </TouchableWithoutFeedback>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: palette.white,
+  },
+  scrollContainer: {
+    flexGrow: 1,
   },
   title: {
     fontFamily: 'PoppinsBold',
@@ -73,5 +63,17 @@ const styles = StyleSheet.create({
     color: palette.primary,
     marginTop: 20,
     paddingHorizontal: 16,
+  },
+  channelContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+  },
+  channelTitle: {
+    fontFamily: 'PoppinsBold',
+    fontSize: 14,
+    marginLeft: 12,
   },
 })

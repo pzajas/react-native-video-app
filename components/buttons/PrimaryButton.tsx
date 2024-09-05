@@ -15,7 +15,7 @@ export const PrimaryButton = ({ width, text, fontFamily, fontSize, icon, onPress
       style={({ pressed }) => [styles.button, pressed && styles.buttonPressed, { width } as ViewStyle]}
       onPress={onPress}
     >
-      <View style={styles.iconContainer}>{icon}</View>
+      {icon && <View style={styles.iconContainer}>{icon}</View>}
       <Text style={[styles.text, { fontFamily, fontSize }]}>{text}</Text>
     </Pressable>
   )
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginRight: 24,
   },
   text: {
-    color: 'white',
+    color: palette.white,
     fontFamily: 'PoppinsRegular',
   },
 })

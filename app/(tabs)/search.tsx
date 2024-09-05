@@ -7,6 +7,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { SearchInput, SearchedItem, DataLoading, EmptyQuery } from '@/components/search'
 import { SearchResultsText } from '@/components/search/searchResultText'
 import debounce from 'lodash/debounce'
+import palette from '@/constants/palette'
 
 export default function Search() {
   const { title } = useLocalSearchParams()
@@ -54,7 +55,7 @@ export default function Search() {
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white', flex: 1, paddingHorizontal: 16 }}>
+    <SafeAreaView style={{ backgroundColor: palette.white, flex: 1, paddingHorizontal: 16 }}>
       <View style={styles.searchContainer}>
         <SearchInput query={query} onChange={handleSearchChange} />
       </View>

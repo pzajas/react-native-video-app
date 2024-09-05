@@ -1,3 +1,4 @@
+import palette from '@/constants/palette'
 import { Text, StyleSheet, View } from 'react-native'
 
 export const Footer = () => {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     fontFamily: 'PoppinsRegular',
   },
   whiteText: {
-    color: 'white',
+    color: palette.white,
   },
   underline: {
     textDecorationLine: 'underline',

@@ -1,15 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Button,
-  Alert,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, Button, Alert, ScrollView } from 'react-native'
 import { useForm, Controller } from 'react-hook-form'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
@@ -17,6 +6,7 @@ import { useLocalSearchParams } from 'expo-router'
 import { PrimaryButton } from './buttons/PrimaryButton'
 import LikesIcon from '@/assets/icons/LikesIcon'
 import ViewsIcon from '@/assets/icons/ViewsIcon'
+import palette from '@/constants/palette'
 
 type Note = { text: string; time: string }
 interface FormData {
@@ -34,7 +24,16 @@ const TabSwitcher = ({
   setSelectedTab: any
   currentTime: string
 }) => {
-  const { control, handleSubmit, reset } = useForm<FormData>({ defaultValues: { note: '' } })
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: { note: '' },
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
+  })
   const queryClient = useQueryClient()
   const params = useLocalSearchParams()
 
@@ -89,17 +88,17 @@ const TabSwitcher = ({
 
             <Text style={[styles.contentText, { fontFamily: 'PoppinsExtraBold', marginVertical: 16 }]}>Statistics</Text>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <View style={styles.statsContainer}>
               <PrimaryButton
                 text={'234243 views'}
-                icon={<ViewsIcon color={'white'} />}
+                icon={<ViewsIcon color={palette.white} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
                 width="45%"
               />
               <PrimaryButton
                 text="25268952 likes"
-                icon={<LikesIcon color={'white'} />}
+                icon={<LikesIcon color={palette.white} />}
                 fontFamily="PoppinsMedium"
                 fontSize={10}
                 width="50%"
@@ -109,13 +108,13 @@ const TabSwitcher = ({
         )
       case 'Notes':
         return (
-          <ScrollView>
+          <ScrollView style={styles.notesScrollView}>
             <View>
               {notes?.map((note, index) => (
-                <Text key={index} style={styles.noteText}>
-                  {note.text}
+                <View key={index} style={styles.noteContainer}>
+                  <Text style={styles.noteText}>{note.text}</Text>
                   <Text style={styles.noteTime}> ({note.time})</Text>
-                </Text>
+                </View>
               ))}
             </View>
 
@@ -123,19 +122,30 @@ const TabSwitcher = ({
               <Controller
                 control={control}
                 name="note"
+                rules={{ required: 'Note cannot be empty' }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
-                    style={styles.noteInput}
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    placeholder="Enter notes..."
-                    placeholderTextColor="gray"
-                    multiline
-                  />
+                  <>
+                    <TextInput
+                      style={styles.noteInput}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      placeholder="Enter notes..."
+                      placeholderTextColor="gray"
+                      multiline
+                      textAlignVertical="top"
+                    />
+                    {errors.note && <Text style={styles.errorText}>{errors.note.message}</Text>}
+                  </>
                 )}
               />
-              <Button title="Add Note" onPress={handleSubmit(onSubmit)} />
+              <PrimaryButton
+                text="Add Note"
+                onPress={handleSubmit(onSubmit)}
+                fontFamily="PoppinsSemiBold"
+                fontSize={14}
+                width="100%"
+              />
             </View>
           </ScrollView>
         )
@@ -145,33 +155,31 @@ const TabSwitcher = ({
   }
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.tabContainer}>
-          <TouchableOpacity
-            style={[styles.tabButton, selectedTab === 'Details' && styles.activeTab]}
-            onPress={() => setSelectedTab('Details')}
-          >
-            <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Details</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.tabButton, selectedTab === 'Notes' && styles.activeTab]}
-            onPress={() => setSelectedTab('Notes')}
-          >
-            <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Notes</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.contentContainer}>{renderContent()}</View>
+    <ScrollView style={styles.container}>
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'Details' && styles.activeTab]}
+          onPress={() => setSelectedTab('Details')}
+        >
+          <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Details</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, selectedTab === 'Notes' && styles.activeTab]}
+          onPress={() => setSelectedTab('Notes')}
+        >
+          <Text style={[styles.tabText, { fontFamily: 'PoppinsExtraBold' }]}>Notes</Text>
+        </TouchableOpacity>
       </View>
-    </TouchableWithoutFeedback>
+      <View style={styles.contentContainer}>{renderContent()}</View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    marginTop: 20,
+    flex: 1,
     paddingHorizontal: 16,
+    paddingBottom: 8,
   },
   tabContainer: {
     flexDirection: 'row',
@@ -185,29 +193,33 @@ const styles = StyleSheet.create({
     borderBottomColor: 'transparent',
   },
   activeTab: {
-    borderBottomColor: 'grey',
+    borderBottomColor: palette.grey,
   },
   tabText: {
     fontSize: 12,
-    color: 'grey',
+    color: palette.grey,
   },
   contentContainer: {
     marginTop: 20,
-    width: '100%',
   },
   contentText: {
     fontSize: 10,
-    color: 'grey',
+    color: palette.grey,
     marginBottom: 10,
   },
-  noteText: {
-    fontSize: 12,
-    color: 'gray',
-    marginBottom: 5,
+  notesScrollView: {
+    flexGrow: 1,
+  },
+  noteContainer: {
+    marginBottom: 10,
     borderWidth: 2,
     padding: 12,
     borderRadius: 12,
     borderColor: 'lightgray',
+  },
+  noteText: {
+    fontSize: 12,
+    color: 'gray',
     fontFamily: 'PoppinsRegular',
   },
   noteTime: {
@@ -215,8 +227,6 @@ const styles = StyleSheet.create({
     color: 'darkgrey',
   },
   noteForm: {
-    flexDirection: 'column',
-    alignItems: 'center',
     marginTop: 10,
   },
   noteInput: {
@@ -225,8 +235,20 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     paddingHorizontal: 12,
-    color: 'grey',
+    paddingTop: 12,
+    color: palette.grey,
     width: '100%',
+    marginBottom: 10,
+    textAlignVertical: 'top',
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 4,
   },
 })
 

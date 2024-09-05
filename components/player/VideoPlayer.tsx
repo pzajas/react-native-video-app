@@ -1,6 +1,5 @@
-import Video from 'react-native-video'
 import { View, StyleSheet } from 'react-native'
-import { useState } from 'react'
+import Video from 'react-native-video'
 
 const VideoPlayer = ({ setCurrentTime }: any) => {
   const handleProgress = (data) => {

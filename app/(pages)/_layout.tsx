@@ -14,7 +14,7 @@ export default function PagesLayout() {
           title: 'Settings',
           headerStyle: { backgroundColor: palette.white },
           headerTintColor: palette.primary,
-          headerShown: true,
+          headerShown: false,
           headerShadowVisible: false,
           headerLeft: ({ navigation }: any) => (
             <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>

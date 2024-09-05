@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   headerTextPrimary: {
-    color: 'white',
+    color: palette.white,
     fontFamily: 'PoetsenOne',
     fontSize: 64,
     lineHeight: 76.8,
